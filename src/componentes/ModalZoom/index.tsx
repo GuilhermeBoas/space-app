@@ -41,15 +41,20 @@ const Dialog = styled.dialog`
 `
 
 
-const ModalZoom = ({ foto, aoFechar }: { foto: fotosGaleria | null, aoFechar:(value: React.SetStateAction<fotosGaleria | null>) => void }) => {
+const ModalZoom = ({ foto, aoFechar, aoAlternarFavorito }: { foto: fotosGaleria | null, aoFechar: (value: React.SetStateAction<fotosGaleria | null>) => void, aoAlternarFavorito: (foto: fotosGaleria) => void }) => {
     return (
         <>
             {foto && <>
-                <OverLayer/>
+                <OverLayer />
                 <Dialog open={!!foto}>
-                    <Imagem foto={foto} expandida={true} />
+                    <Imagem 
+                        aoAlternarFavorito={aoAlternarFavorito} 
+                        foto={foto} 
+                        expandida={true} 
+                    />
+                    
                     <form method="dialog">
-                        <button onClick={()=>aoFechar(null)}>
+                        <button onClick={() => aoFechar(null)}>
                             <img src="/icones/fechar.png" alt="" />
                         </button>
                     </form>

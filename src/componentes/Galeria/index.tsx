@@ -27,7 +27,7 @@ interface fotosGaleria {
 
 
 
-const Galeria = ({ fotos,aoFotoSelecionada}:{ fotos: fotosGaleria[],aoFotoSelecionada?:(foto: fotosGaleria) => void; }) => {
+const Galeria = ({ fotos,aoFotoSelecionada,aoAlternarFavorito}:{ fotos: fotosGaleria[],aoFotoSelecionada?:(foto: fotosGaleria) => void, aoAlternarFavorito:(foto: any) => void}) => {
     return (
         <>
             <Tags />
@@ -37,9 +37,12 @@ const Galeria = ({ fotos,aoFotoSelecionada}:{ fotos: fotosGaleria[],aoFotoSeleci
                     
                     <ul>
                         {
-                            fotos.map(foto => <Imagem 
+                            fotos.map(foto => 
+                            <Imagem 
                                 aoZoomSolicitado={aoFotoSelecionada}
-                                key={foto.id} foto={foto}/>)
+                                key={foto.id} foto={foto}
+                                aoAlternarFavorito={aoAlternarFavorito}
+                            />)
                         }
                     </ul>
 

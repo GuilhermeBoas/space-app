@@ -38,14 +38,38 @@ interface fotosGaleria {
   path: string;
   id: string;
   tagId: number;
+  favorita?:boolean
 }
 
 function App() {
-  const [fotosGaleria, SetFotosGaleria] = useState(fotos)
-  const [fotoSelecionada, SetFotoSelecionada] = useState<fotosGaleria | null>(null)
+  const [fotosGaleria, setFotosGaleria] = useState(fotos)
+  const [fotoSelecionada, setFotoSelecionada] = useState<fotosGaleria | null>(null)
+  
+  const aoAlternarFavorito = (foto:any) => {
+      if(foto.id === fotoSelecionada?.id) {
+        setFotoSelecionada(fotoSelecionada &&({
+          ...fotoSelecionada,
+          favorita: !fotoSelecionada.favorita,
+          titulo: fotoSelecionada?.titulo || "",
+          fonte: fotoSelecionada?.fonte || "",   
+          path: fotoSelecionada?.path || "",    
+          id: fotoSelecionada?.id || "",       
+          tagId: fotoSelecionada?.tagId || 0    
+        }))
+      }
+    
+    setFotosGaleria(fotosGaleria.map((fotoDaGaleria:fotosGaleria) => {
+        return{
+          ...fotoDaGaleria,
+          favorita: fotoDaGaleria.id === foto.id ? !fotoDaGaleria.favorita : fotoDaGaleria.favorita
+        }
+    }))
+  }
+  
   //não esqueça de tipar os useStATE TBM 
 
-    //Chega por hj quando abrir de novo tentar entender o que aconteceu e como foi passada a infomação de filho para pai 
+  //Chega por hj quando abrir de novo tentar entender o que aconteceu e como foi passada a infomação de filho para pai 
+
 
   return (
     <FundoGradiente>
@@ -58,13 +82,20 @@ function App() {
           <BarraLateral />
           <ConteudoGaleria>
             <Banner />
-            <Galeria aoFotoSelecionada={(foto) => SetFotoSelecionada(foto)}
-              fotos={fotosGaleria} />
+            <Galeria
+              aoFotoSelecionada={(foto) => setFotoSelecionada(foto)}
+              fotos={fotosGaleria} 
+              aoAlternarFavorito={aoAlternarFavorito}/>
           </ConteudoGaleria>
         </MainContainer>
 
       </AppContainer>
-      <ModalZoom aoFechar={nada => SetFotoSelecionada(nada)} foto={fotoSelecionada} />
+      <ModalZoom
+        aoAlternarFavorito={aoAlternarFavorito} 
+        aoFechar={nada => setFotoSelecionada(nada)}
+        foto={fotoSelecionada} 
+      />
+
       {/* error no Modal !expandida */}
     </FundoGradiente>
   )

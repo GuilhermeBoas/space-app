@@ -7,6 +7,7 @@ interface fotosGaleria {
     path: string;
     id: string;
     tagId: number;
+    favorita?:boolean
 }
 interface Expandida{
     $expandida?:boolean
@@ -54,7 +55,16 @@ const RodapeFig = styled.footer`
 `
 
 
-const Imagem = ({ foto, expandida = false, aoZoomSolicitado }: { foto: fotosGaleria, expandida?:boolean,aoZoomSolicitado?:(foto: fotosGaleria) => void; }) => {
+const Imagem = ({ foto, expandida = false, aoZoomSolicitado,aoAlternarFavorito }: 
+    { 
+      foto: fotosGaleria, 
+      expandida?:boolean,
+      aoZoomSolicitado: (foto: fotosGaleria) => void,
+      aoAlternarFavorito:(foto: any) => void
+    }) => {
+    
+    const iconeFavorito = foto.favorita ? '/icones/favorito-ativo.png' : '/icones/favorito.png'
+
     return (
         <ContainerFigure $expandida={expandida} id={`foto-${foto.id}`}>
             <ImgCard src={foto.path} alt={foto.titulo} />
@@ -66,8 +76,10 @@ const Imagem = ({ foto, expandida = false, aoZoomSolicitado }: { foto: fotosGale
                     <p>{foto.fonte}</p>
 
                     <div>
-                        <BotaoFig>
-                            <img src="/icones/favorito.png" alt="icone de "></img>
+                        <BotaoFig onClick={()=>aoAlternarFavorito(foto)}>
+                            
+                            <img src={iconeFavorito} alt="icone de "></img>
+
                         </BotaoFig>
 
                         {!expandida && <BotaoFig aria-hidden={expandida}
